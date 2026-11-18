@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -43,17 +44,30 @@ public TMPro.TextMeshProUGUI scoreText;
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //destroy object upon collision with player
-        Destroy(collision.gameObject);
+        if(collision.GameObject().tag != "Hazard")
+        {
+            //destroy object upon collision with player
+            Destroy(collision.gameObject);
 
-        //respawn the destroyed object
-        GM.Respawn();
+            //respawn the destroyed object
+            GM.Respawn();
 
+            //increase score by 1 upon collision
+            score++;
+            
+            
+        }
+        else
+        {
+            GM.RespawnPlayer();
+            score = 0;
+        }
+        
+        scoreText.text = "Score: " + score;
+        
         //change player color to a random color upon collision
         currentColor.color = Random.ColorHSV();
 
-        //increase score by 1 upon collision
-        score++;
-        scoreText.text = "Score: " + score;
+        
     }
 }
